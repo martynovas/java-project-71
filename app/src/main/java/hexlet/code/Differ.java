@@ -26,15 +26,15 @@ public class Differ {
         }
     }
 
-    public static String generate(Map<String, String> map1, Map<String, String> map2) throws Exception {
-        Differ.map1 = map1;
-        Differ.map2 = map2;
+    public static String generate(Map<String, String> dataMap1, Map<String, String> dataMap2) throws Exception {
+        Differ.map1 = dataMap1;
+        Differ.map2 = dataMap2;
 
         stringBuilder = new StringBuilder();
         stringBuilder.append("{\n");
         Stream.concat(
-                        map1.keySet().stream(),
-                        map2.keySet().stream()
+                        dataMap1.keySet().stream(),
+                        dataMap2.keySet().stream()
                 )
                 .distinct()
                 .sorted()
