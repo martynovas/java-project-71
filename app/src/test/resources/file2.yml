@@ -1,0 +1,11 @@
+timeout: 70
+proxy: 123.234.53.22
+root:
+  tree:
+    key1: 33
+    key2: 22
+follow: false
+key: ['string1', 'string2', 'string3',
+      'string4', 'string5',
+      'string6']
+ip: 192.168.0.1

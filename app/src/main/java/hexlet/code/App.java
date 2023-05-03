@@ -1,14 +1,10 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
-import java.nio.file.Paths;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 @Command(name = "gendiff", mixinStandardHelpOptions = true, version = "gendiff 1.0",
@@ -26,18 +22,9 @@ public class App implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        var path1 = Paths.get(filepath1).toAbsolutePath().normalize();
-        var path2 = Paths.get(filepath2).toAbsolutePath().normalize();
+        var result = Differ.generate(filepath1, filepath2, format);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        var map1 = objectMapper.readValue(path1.toFile(), new TypeReference<Map<String, String>>() {
-        });
-        var map2 = objectMapper.readValue(path2.toFile(), new TypeReference<Map<String, String>>() {
-        });
-
-        var diff = Differ.generate(map1, map2);
-
-        System.out.println(diff);
+        System.out.println(result);
 
         return null;
     }
