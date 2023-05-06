@@ -45,6 +45,6 @@ public class PlainFormatter implements DiffFormatter {
             formatElement(e.getKey(), e.getValue());
         }
 
-        return stringBuilder.toString();
+        return stringBuilder.toString().trim();
     }
 }
