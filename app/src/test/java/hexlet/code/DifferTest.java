@@ -12,8 +12,7 @@ public class DifferTest {
 
         var result = Differ.generate(
                 "src/test/resources/file1.json",
-                "src/test/resources/file2.json",
-                "stylish");
+                "src/test/resources/file2.json");
 
         assertThat(result)
                 .isEqualTo("""

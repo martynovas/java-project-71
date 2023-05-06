@@ -32,6 +32,10 @@ public class Differ {
         return map;
     }
 
+    public static String generate(String filePath1, String filePath2) throws Exception {
+        return generate(filePath1, filePath2, "stylish");
+    }
+
     public static String generate(String filePath1, String filePath2, String formatName) throws Exception {
         map1 = Parser.parse(filePath1);
         map2 = Parser.parse(filePath2);
