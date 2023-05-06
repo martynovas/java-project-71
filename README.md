@@ -6,3 +6,6 @@
 
 ### Codeclimate Test Coverage
 [![Test Coverage](https://api.codeclimate.com/v1/badges/3b6ee5dab491f47acc9e/test_coverage)](https://codeclimate.com/github/martynovas/java-project-71/test_coverage)
+
+###Asciinema
+[![asciicast](https://asciinema.org/a/byVV4bF5QCXd4Y12lhhamEPXp.svg)](https://asciinema.org/a/byVV4bF5QCXd4Y12lhhamEPXp)

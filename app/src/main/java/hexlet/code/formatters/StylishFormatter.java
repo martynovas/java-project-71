@@ -1,37 +1,37 @@
 package hexlet.code.formatters;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import hexlet.code.DiffFormatter;
-import hexlet.code.DiffType;
 
 import java.util.Map;
 
 public class StylishFormatter implements DiffFormatter {
     private static StringBuilder stringBuilder;
 
-    private static void println(String sign, String key, JsonNode value) {
-        switch (value.getNodeType()) {
-            case OBJECT, ARRAY ->
-                    stringBuilder.append(String.format("  %s %s: %s\n", sign, key, value.toString().replace("\"", "")));
-            default -> stringBuilder.append(String.format("  %s %s: %s\n", sign, key, value.asText()));
+    private static void println(String sign, String key, Object value) {
+        stringBuilder.append(String.format("  %s %s: %s\n", sign, key, value == null ? "null" : value.toString()));
+    }
+
+    public void formatElement(String key, Map<String, Object> diff) {
+        switch ((String) diff.get("difference")) {
+            case "added" -> println("+", key, diff.get("value"));
+            case "equal" -> println(" ", key, diff.get("value"));
+            case "updated" -> {
+                println("-", key, diff.get("old_value"));
+                println("+", key, diff.get("new_value"));
+            }
+            case "removed" -> println("-", key, diff.get("value"));
+            default -> {
+            }
         }
     }
 
-    public String format(Map<String, DiffType> diff, Map<String, JsonNode> map1, Map<String, JsonNode> map2) {
+    @Override
+    public String format(Map<String, Map<String, Object>> diff) {
         stringBuilder = new StringBuilder();
         stringBuilder.append("{\n");
 
         for (var e : diff.entrySet()) {
-            switch (e.getValue()) {
-                case ADDED -> println("+", e.getKey(), map2.get(e.getKey()));
-                case EQUAL -> println(" ", e.getKey(), map2.get(e.getKey()));
-                case UPDATED -> {
-                    println("-", e.getKey(), map1.get(e.getKey()));
-                    println("+", e.getKey(), map2.get(e.getKey()));
-                }
-                case REMOVED -> println("-", e.getKey(), map1.get(e.getKey()));
-                default -> { }
-            }
+            formatElement(e.getKey(), e.getValue());
         }
 
         stringBuilder.append("}\n");
