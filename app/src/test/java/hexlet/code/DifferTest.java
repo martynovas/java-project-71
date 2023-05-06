@@ -40,8 +40,7 @@ public class DifferTest {
                           + setting2: 300
                           - setting3: true
                           + setting3: none
-                        }
-                                                """);
+                        }""");
     }
 
     @Test
@@ -63,8 +62,7 @@ public class DifferTest {
                           + root: {tree={key1=33, key2=22}}
                           - timeout: 50
                           + timeout: 70
-                        }
-                        """);
+                        }""");
     }
 
     @Test

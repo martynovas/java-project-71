@@ -34,7 +34,7 @@ public class StylishFormatter implements DiffFormatter {
             formatElement(e.getKey(), e.getValue());
         }
 
-        stringBuilder.append("}\n");
+        stringBuilder.append("}");
         return stringBuilder.toString();
     }
 }
