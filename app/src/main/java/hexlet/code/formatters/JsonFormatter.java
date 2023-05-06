@@ -7,7 +7,7 @@ import hexlet.code.DiffFormatter;
 
 import java.util.Map;
 
-public class JsonFormatter implements DiffFormatter {
+public final class JsonFormatter implements DiffFormatter {
 
     @Override
     public String format(Map<String, Map<String, Object>> diff) {

@@ -5,7 +5,7 @@ import hexlet.code.DiffFormatter;
 import java.util.Collection;
 import java.util.Map;
 
-public class PlainFormatter implements DiffFormatter {
+public final class PlainFormatter implements DiffFormatter {
     private static StringBuilder stringBuilder;
 
     private String getStringValue(Object value) {
@@ -20,7 +20,7 @@ public class PlainFormatter implements DiffFormatter {
         }
     }
 
-    public void formatElement(String key, Map<String, Object> diff) {
+    private void formatElement(String key, Map<String, Object> diff) {
         switch ((String) diff.get("difference")) {
             case "added" -> stringBuilder.append(
                     String.format("Property '%s' was added with value: %s\n",

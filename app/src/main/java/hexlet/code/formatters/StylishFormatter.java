@@ -4,7 +4,7 @@ import hexlet.code.DiffFormatter;
 
 import java.util.Map;
 
-public class StylishFormatter implements DiffFormatter {
+public final class StylishFormatter implements DiffFormatter {
     private static StringBuilder stringBuilder;
 
     private static void println(String sign, String key, Object value) {
