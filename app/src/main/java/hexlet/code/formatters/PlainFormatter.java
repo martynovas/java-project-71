@@ -20,25 +20,26 @@ public final class PlainFormatter implements DiffFormatter {
         }
     }
 
-    private void formatElement(String key, Map<String, Object> diff) {
+    private void formatElement(String key, Map<String, Object> diff) throws Exception {
         switch ((String) diff.get("difference")) {
             case "added" -> stringBuilder.append(
                     String.format("Property '%s' was added with value: %s\n",
                             key,
                             getStringValue(diff.get("value"))));
+            case "equal" -> {
+            }
             case "updated" -> stringBuilder.append(
                     String.format("Property '%s' was updated. From %s to %s\n",
                             key,
                             getStringValue(diff.get("old_value")),
                             getStringValue(diff.get("new_value"))));
             case "removed" -> stringBuilder.append(String.format("Property '%s' was removed\n", key));
-            default -> {
-            }
+            default -> throw new Exception("Unknown difference: " + diff.get("difference"));
         }
     }
 
     @Override
-    public String format(Map<String, Map<String, Object>> diff) {
+    public String format(Map<String, Map<String, Object>> diff) throws Exception {
         stringBuilder = new StringBuilder();
 
         for (var e : diff.entrySet()) {

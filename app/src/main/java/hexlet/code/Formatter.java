@@ -14,7 +14,7 @@ public class Formatter {
 
     public static String format(
             Map<String, Map<String, Object>> diff,
-            String formatName) {
+            String formatName) throws Exception {
         return FORMATTERS.get(formatName).format(diff);
     }
 }
