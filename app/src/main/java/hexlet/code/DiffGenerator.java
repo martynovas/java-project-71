@@ -32,9 +32,9 @@ public class DiffGenerator {
         return map;
     }
 
-    public static Map<String, Map<String, Object>> generate(Map<String, Object> map1, Map<String, Object> map2) {
-        DiffGenerator.map1 = map1;
-        DiffGenerator.map2 = map2;
+    public static Map<String, Map<String, Object>> generate(Map<String, Object> oldMap, Map<String, Object> newMap) {
+        DiffGenerator.map1 = oldMap;
+        DiffGenerator.map2 = newMap;
 
         return Stream.concat(
                         map1.keySet().stream(),
