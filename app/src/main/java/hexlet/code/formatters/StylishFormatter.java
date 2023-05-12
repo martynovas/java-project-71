@@ -5,33 +5,28 @@ import hexlet.code.DiffFormatter;
 import java.util.Map;
 
 public final class StylishFormatter implements DiffFormatter {
-    private static StringBuilder stringBuilder;
-
-    private static void println(String sign, String key, Object value) {
-        stringBuilder.append(String.format("  %s %s: %s\n", sign, key, value == null ? "null" : value.toString()));
+    private static String formatLine(String sign, String key, Object value) {
+        return String.format("  %s %s: %s\n", sign, key, value == null ? "null" : value.toString());
     }
 
-    public void formatElement(String key, Map<String, Object> diff) {
-        switch ((String) diff.get("difference")) {
-            case "added" -> println("+", key, diff.get("value"));
-            case "equal" -> println(" ", key, diff.get("value"));
-            case "updated" -> {
-                println("-", key, diff.get("old_value"));
-                println("+", key, diff.get("new_value"));
-            }
-            case "removed" -> println("-", key, diff.get("value"));
-            default -> {
-            }
-        }
+    public String formatElement(String key, Map<String, Object> diff) throws Exception {
+        return switch ((String) diff.get("difference")) {
+            case "added" -> formatLine("+", key, diff.get("value"));
+            case "equal" -> formatLine(" ", key, diff.get("value"));
+            case "updated" -> formatLine("-", key, diff.get("old_value"))
+                    + formatLine("+", key, diff.get("new_value"));
+            case "removed" -> formatLine("-", key, diff.get("value"));
+            default -> throw new Exception("Unknown difference: " + diff.get("difference"));
+        };
     }
 
     @Override
-    public String format(Map<String, Map<String, Object>> diff) {
-        stringBuilder = new StringBuilder();
+    public String format(Map<String, Map<String, Object>> diff) throws Exception {
+        var stringBuilder = new StringBuilder();
         stringBuilder.append("{\n");
 
         for (var e : diff.entrySet()) {
-            formatElement(e.getKey(), e.getValue());
+            stringBuilder.append(formatElement(e.getKey(), e.getValue()));
         }
 
         stringBuilder.append("}");

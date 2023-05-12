@@ -2,10 +2,14 @@ package hexlet.code;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,7 +36,7 @@ public class DifferTest {
     }
 
     @Test
-    void jsonDefaultTest() throws Exception {
+    void defaultFormatTest() throws Exception {
         var result = Differ.generate(
                 "src/test/resources/file1.json",
                 "src/test/resources/file2.json");
@@ -41,77 +45,31 @@ public class DifferTest {
                 .isEqualTo(resultStylish);
     }
 
-    @Test
-    void jsonStylishTest() throws Exception {
+    @ParameterizedTest
+    @MethodSource("testDataSource")
+    void test(String filePath1, String filePath2, String formatName, String expectedResult) throws Exception {
         var result = Differ.generate(
-                "src/test/resources/file1.json",
-                "src/test/resources/file2.json",
-                "stylish");
-
+                filePath1,
+                filePath2,
+                formatName);
         assertThat(result)
-                .isEqualTo(resultStylish);
+                .isEqualTo(expectedResult);
     }
 
-    @Test
-    void jsonPlainTest() throws Exception {
-        var result = Differ.generate(
-                "src/test/resources/file1.json",
-                "src/test/resources/file2.json",
-                "plain");
-
-        assertThat(result)
-                .isEqualTo(resultPlain);
-    }
-
-    @Test
-    void jsonJsonTest() throws Exception {
-        var result = Differ.generate(
-                "src/test/resources/file1.json",
-                "src/test/resources/file2.json",
-                "json");
-        assertThat(result)
-                .isEqualTo(resultJson);
-    }
-
-    @Test
-    void ymlDefaultTest() throws Exception {
-        var result = Differ.generate(
-                "src/test/resources/file1.json",
-                "src/test/resources/file2.json");
-
-        assertThat(result)
-                .isEqualTo(resultStylish);
-    }
-
-    @Test
-    void ymlStylishTest() throws Exception {
-        var result = Differ.generate(
-                "src/test/resources/file1.json",
-                "src/test/resources/file2.json",
-                "stylish");
-
-        assertThat(result)
-                .isEqualTo(resultStylish);
-    }
-
-    @Test
-    void ymlPlainTest() throws Exception {
-        var result = Differ.generate(
-                "src/test/resources/file1.json",
-                "src/test/resources/file2.json",
-                "plain");
-
-        assertThat(result)
-                .isEqualTo(resultPlain);
-    }
-
-    @Test
-    void ymlJsonTest() throws Exception {
-        var result = Differ.generate(
-                "src/test/resources/file1.json",
-                "src/test/resources/file2.json",
-                "json");
-        assertThat(result)
-                .isEqualTo(resultJson);
+    private static Stream<Arguments> testDataSource() {
+        return Stream.of(
+                Arguments.of("src/test/resources/file1.json", "src/test/resources/file2.json", "stylish",
+                        resultStylish),
+                Arguments.of("src/test/resources/file1.json", "src/test/resources/file2.json", "plain",
+                        resultPlain),
+                Arguments.of("src/test/resources/file1.json", "src/test/resources/file2.json", "json",
+                        resultJson),
+                Arguments.of("src/test/resources/file1.yml", "src/test/resources/file2.yml", "stylish",
+                        resultStylish),
+                Arguments.of("src/test/resources/file1.yml", "src/test/resources/file2.yml", "plain",
+                        resultPlain),
+                Arguments.of("src/test/resources/file1.yml", "src/test/resources/file2.yml", "json",
+                        resultJson)
+        );
     }
 }
