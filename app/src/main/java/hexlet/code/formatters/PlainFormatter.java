@@ -6,8 +6,6 @@ import java.util.Collection;
 import java.util.Map;
 
 public final class PlainFormatter implements DiffFormatter {
-    private static StringBuilder stringBuilder;
-
     private String getStringValue(Object value) {
         if (value == null) {
             return "null";
@@ -20,30 +18,27 @@ public final class PlainFormatter implements DiffFormatter {
         }
     }
 
-    private void formatElement(String key, Map<String, Object> diff) throws Exception {
-        switch ((String) diff.get("difference")) {
-            case "added" -> stringBuilder.append(
-                    String.format("Property '%s' was added with value: %s\n",
+    private String formatElement(String key, Map<String, Object> diff) throws Exception {
+        return switch ((String) diff.get("difference")) {
+            case "added" -> String.format("Property '%s' was added with value: %s\n",
                             key,
-                            getStringValue(diff.get("value"))));
-            case "equal" -> {
-            }
-            case "updated" -> stringBuilder.append(
-                    String.format("Property '%s' was updated. From %s to %s\n",
+                            getStringValue(diff.get("value")));
+            case "equal" -> "";
+            case "updated" -> String.format("Property '%s' was updated. From %s to %s\n",
                             key,
                             getStringValue(diff.get("old_value")),
-                            getStringValue(diff.get("new_value"))));
-            case "removed" -> stringBuilder.append(String.format("Property '%s' was removed\n", key));
+                            getStringValue(diff.get("new_value")));
+            case "removed" -> String.format("Property '%s' was removed\n", key);
             default -> throw new Exception("Unknown difference: " + diff.get("difference"));
-        }
+        };
     }
 
     @Override
     public String format(Map<String, Map<String, Object>> diff) throws Exception {
-        stringBuilder = new StringBuilder();
+        var stringBuilder = new StringBuilder();
 
         for (var e : diff.entrySet()) {
-            formatElement(e.getKey(), e.getValue());
+            stringBuilder.append(formatElement(e.getKey(), e.getValue()));
         }
 
         return stringBuilder.toString().trim();

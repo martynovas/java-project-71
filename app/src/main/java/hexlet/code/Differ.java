@@ -6,7 +6,10 @@ import java.nio.file.Paths;
 
 public class Differ {
     private static String getFileExtension(String filePath) {
-        return filePath.substring(filePath.lastIndexOf(".") + 1);
+        int index = filePath.lastIndexOf('.');
+        return index > 0
+                ? filePath.substring(index + 1)
+                : "";
     }
 
     private static String readFile(String filePath) throws IOException {

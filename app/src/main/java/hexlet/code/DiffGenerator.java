@@ -8,42 +8,38 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DiffGenerator {
-    private static Map<String, Object> map1;
-    private static Map<String, Object> map2;
-
-
-    private static Map<String, Object> genereateElement(String key) {
+    private static Map<String, Object> generateElement(
+            String key,
+            Map<String, Object> oldMap,
+            Map<String, Object> newMap) {
         var map = new LinkedHashMap();
-        if (!map1.containsKey(key)) {
+        if (!oldMap.containsKey(key)) {
             map.put("difference", "added");
-            map.put("value", map2.get(key));
-        } else if (!map2.containsKey(key)) {
+            map.put("value", newMap.get(key));
+        } else if (!newMap.containsKey(key)) {
             map.put("difference", "removed");
-            map.put("value", map1.get(key));
-        } else if (Objects.equals(map1.get(key), map2.get(key))) {
+            map.put("value", oldMap.get(key));
+        } else if (Objects.equals(oldMap.get(key), newMap.get(key))) {
             map.put("difference", "equal");
-            map.put("value", map1.get(key));
-        } else {
+            map.put("value", oldMap.get(key));
+        } else if (!Objects.equals(oldMap.get(key), newMap.get(key))) {
             map.put("difference", "updated");
-            map.put("old_value", map1.get(key));
-            map.put("new_value", map2.get(key));
+            map.put("old_value", oldMap.get(key));
+            map.put("new_value", newMap.get(key));
         }
 
         return map;
     }
 
     public static Map<String, Map<String, Object>> generate(Map<String, Object> oldMap, Map<String, Object> newMap) {
-        DiffGenerator.map1 = oldMap;
-        DiffGenerator.map2 = newMap;
-
         return Stream.concat(
-                        map1.keySet().stream(),
-                        map2.keySet().stream()
+                        oldMap.keySet().stream(),
+                        newMap.keySet().stream()
                 )
                 .distinct()
                 .collect(Collectors.toMap(
                         key -> key,
-                        key -> genereateElement(key),
+                        key -> generateElement(key, oldMap, newMap),
                         (a, b) -> a,
                         TreeMap::new));
     }
